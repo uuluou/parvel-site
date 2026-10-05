@@ -1,4 +1,4 @@
-/* admin.js: back-office ParVel. Token-gated. */
+// back-office. token requis.
 (function () {
   'use strict';
   const root = document.querySelector('[data-admin]');
@@ -75,7 +75,7 @@
     ({ produits: vProduits, contenu: vContenu, avis: vAvis, faq: vFaq, reglages: vReglages, commandes: vCommandes, messages: vMessages })[tab](body);
   }
 
-  /* ================= PRODUITS ================= */
+  // produits
   async function vProduits(body) {
     body.innerHTML = '<p>Chargement...</p>';
     const prods = await (await api('/api/products')).json();
@@ -187,7 +187,7 @@
     });
   }
 
-  /* ================= CONTENU ================= */
+  // contenu page d'accueil
   function putKey(key, value) {
     return api('/api/admin/content/' + key, {
       method: 'PUT', headers: { 'Content-Type': 'application/json' },
@@ -257,7 +257,7 @@
     });
   }
 
-  /* ================= AVIS ================= */
+  // avis clients
   async function vAvis(body) {
     const render = () => {
       const home = content.reviews_home || [], prod = content.reviews_product || [];
@@ -314,7 +314,7 @@
     render();
   }
 
-  /* ================= FAQ ================= */
+  // faq
   async function vFaq(body) {
     const render = () => {
       const faq = content.faq || [];
@@ -358,7 +358,7 @@
     render();
   }
 
-  /* ================= RÉGLAGES ================= */
+  // reglages
   async function vReglages(body) {
     const s = content.settings || {};
     body.innerHTML = `<form data-sform class="admin-form"><h3>Réglages du site</h3>
@@ -387,7 +387,7 @@
     });
   }
 
-  /* ================= COMMANDES / MESSAGES ================= */
+  // commandes + messages
   async function vCommandes(body) {
     body.innerHTML = '<p>Chargement...</p>';
     const orders = await (await api('/api/orders')).json();

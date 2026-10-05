@@ -1,8 +1,7 @@
-/* site.js: navigation, accordions, scroll reveals, CMS content binding. */
+// menu, recherche, faq, reveals, contenu CMS
 (function () {
   'use strict';
 
-  /* ---------- Mobile menu ---------- */
   const burger = document.querySelector('[data-burger]');
   const mnav = document.querySelector('[data-mobile-nav]');
   const overlay = document.querySelector('[data-overlay]');
@@ -13,7 +12,6 @@
   if (mclose) mclose.addEventListener('click', closeMobile);
   if (overlay) overlay.addEventListener('click', () => { closeMobile(); closeCartDrawer(); });
 
-  /* ---------- Search overlay ---------- */
   const searchOverlay = document.querySelector('[data-search-overlay]');
   const searchInput = document.querySelector('[data-search-input]');
   const searchResults = document.querySelector('[data-search-results]');
@@ -49,7 +47,6 @@
   }
   if (searchInput) searchInput.addEventListener('input', e => renderSearch(e.target.value));
 
-  /* ---------- FAQ accordions ---------- */
   document.querySelectorAll('[data-faq]').forEach(faq => {
     faq.addEventListener('click', e => {
       const q = e.target.closest('.faq-q');
@@ -61,7 +58,6 @@
     });
   });
 
-  /* ---------- Scroll reveals (staggered) ---------- */
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!reduce && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver(entries => {
@@ -80,7 +76,6 @@
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
   }
 
-  /* ---------- Header shadow on scroll ---------- */
   const header = document.querySelector('.site-header');
   if (header) {
     addEventListener('scroll', () => {
@@ -88,7 +83,6 @@
     }, { passive: true });
   }
 
-  /* ---------- CMS content binding ---------- */
   function setText(sel, val) {
     if (val == null) return;
     document.querySelectorAll(`[data-content="${sel}"]`).forEach(el => { el.textContent = val; });
@@ -116,10 +110,10 @@
   async function bindContent() {
     let c;
     try { c = await (await fetch('/api/content')).json(); }
-    catch { return; } /* keep hardcoded fallback */
+    catch { return; } // si l'api repond pas on garde le html d'origine
     if (!c || typeof c !== 'object') return;
 
-    setText('announcement_text', null); /* handled below to preserve marquee */
+    setText('announcement_text', null); // le bandeau defilant est gere juste en bas
     if (c.announcement_text) {
       const track = document.querySelector('[data-announce]');
       if (track) {
@@ -146,7 +140,7 @@
       document.querySelectorAll('[data-social="tiktok"]').forEach(a => { if (c.settings.tiktok) a.href = c.settings.tiktok; });
       if (c.settings.shipping_threshold) window.PARVEL_SHIP_THRESHOLD = Number(c.settings.shipping_threshold) || 300;
     }
-    /* badges */
+    // badges
     if (Array.isArray(c.badges)) {
       const wrap = document.querySelector('[data-badges]');
       if (wrap) {
@@ -158,14 +152,14 @@
           </div>`).join('');
       }
     }
-    /* marquee */
+    // bandeau defilant
     if (Array.isArray(c.marquee_items) && c.marquee_items.length) {
       document.querySelectorAll('[data-marquee]').forEach(track => {
         const seq = c.marquee_items.map(t => `${esc(t)} <b>✦</b>`).join(' ');
         track.innerHTML = `<span>${seq} </span><span aria-hidden="true">${seq} </span>`;
       });
     }
-    /* collections cards */
+    // cartes collections
     if (Array.isArray(c.collections)) {
       const wrap = document.querySelector('[data-collections]');
       if (wrap) {
@@ -176,27 +170,23 @@
           </a>`).join('');
       }
     }
-    /* reviews (homepage) */
+    // avis page d'accueil
     if (Array.isArray(c.reviews_home) && c.reviews_home.length) {
       const wrap = document.querySelector('[data-reviews-home]');
       if (wrap) wrap.innerHTML = c.reviews_home.map(reviewCard).join('');
     }
-    /* FAQ */
+    // faq
     if (Array.isArray(c.faq) && c.faq.length) {
       document.querySelectorAll('[data-faq-list]').forEach(wrap => {
         wrap.innerHTML = c.faq.map(faqItem).join('');
       });
     }
-    /* hero video */
-    if (c.hero_video) {
-      const v = document.querySelector('[data-hero-video]');
-      if (v && !v.getAttribute('src')) { /* static src already set; allow override */ }
-    }
+    // la video hero est en dur dans le html pour l'instant, a brancher sur le CMS plus tard
   }
   bindContent();
   window.ParVelContent = { bindContent, esc, reviewCard, faqItem };
 
-  /* cart drawer close helper used by overlay */
+  // pour fermer le panier depuis l'overlay
   function closeCartDrawer() {
     const d = document.querySelector('[data-cart-drawer]');
     if (d) d.classList.remove('open');

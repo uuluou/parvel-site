@@ -1,4 +1,4 @@
-/* shop.js: product grids, filters, sort, search for shop + collection pages. */
+// grilles produits, filtres, tri, recherche
 (function () {
   'use strict';
   const C = window.ParVelCart;
@@ -31,7 +31,7 @@
     const grid = document.querySelector('[data-product-grid]');
     if (!grid || !C) return;
     const prods = await C.getCatalog();
-    const preset = grid.dataset.filter || 'all'; /* all | homme | femme | pack | promo */
+    const preset = grid.dataset.filter || 'all';
     const chipsWrap = document.querySelector('[data-chips]');
     const sortSel = document.querySelector('[data-sort]');
     const searchBox = document.querySelector('[data-shop-search]');
@@ -82,7 +82,7 @@
     render();
   }
 
-  /* Homepage tabs (Nouveautés / Meilleures Ventes / Soldes) */
+  // onglets page d'accueil
   async function initHomeTabs() {
     const wrap = document.querySelector('[data-home-tabs]');
     if (!wrap || !C) return;
@@ -107,7 +107,7 @@
     show('nouveautes');
   }
 
-  /* Featured 8 singles on homepage ("Une fraîcheur qui vous ressemble") */
+  // les 8 gels mis en avant sur la home
   async function initFeatured() {
     const grid = document.querySelector('[data-featured-grid]');
     if (!grid || !C) return;

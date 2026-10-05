@@ -1,4 +1,4 @@
-/* checkout.js: 3-step COD flow (infos, récapitulatif, confirmation). */
+// commande en 3 etapes, paiement a la livraison
 (function () {
   'use strict';
   const C = window.ParVelCart;

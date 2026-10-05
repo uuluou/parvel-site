@@ -1,7 +1,5 @@
 'use strict';
-/* ParVel backend: Express + node:sqlite (Node 24 built-in).
-   Serves public/, JSON APIs for products, COD orders, messages,
-   site content CMS, and token-gated admin product management. */
+// backend ParVel: express + sqlite (node 24). rien de sorcier.
 
 const express = require('express');
 const { DatabaseSync } = require('node:sqlite');
@@ -17,7 +15,6 @@ const PUBLIC = path.join(ROOT, 'public');
 const UPLOAD_DIR = path.join(PUBLIC, 'assets', 'uploads');
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
-/* ---------- Database ---------- */
 const db = new DatabaseSync(path.join(ROOT, 'data.sqlite'));
 
 db.exec(`
@@ -65,7 +62,7 @@ function slugify(s) {
     .slice(0, 80) || 'produit';
 }
 
-/* ---------- Seed: products ---------- */
+// premier lancement: on remplit la table produits
 function seedProducts() {
   const count = db.prepare('SELECT COUNT(*) AS c FROM products').get().c;
   if (count > 0) return;
@@ -85,7 +82,7 @@ function seedProducts() {
   console.log(`Seeded ${seed.length} products.`);
 }
 
-/* ---------- Seed: site content CMS ---------- */
+// pareil pour le contenu du site
 function seedContent() {
   const count = db.prepare('SELECT COUNT(*) AS c FROM site_content').get().c;
   if (count > 0) return;
@@ -137,7 +134,6 @@ function seedContent() {
 seedProducts();
 seedContent();
 
-/* ---------- App ---------- */
 const app = express();
 app.use(express.json({ limit: '2mb' }));
 
@@ -163,7 +159,6 @@ function adminAuth(req, res, next) {
 const MOROCCAN_PHONE = /^(\+212|0)(6|7)\d{8}$/;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/* ----- Public: products ----- */
 app.get('/api/products', (req, res) => {
   const rows = db.prepare('SELECT * FROM products ORDER BY id').all();
   res.json(rows.map(productRow));
@@ -175,7 +170,8 @@ app.get('/api/products/:handle', (req, res) => {
   res.json(productRow(r));
 });
 
-/* ----- Public: COD orders ----- */
+// commandes en paiement a la livraison
+// TODO: mettre un rate limit ici, sinon ca va se faire spammer
 app.post('/api/orders', (req, res) => {
   const { name, phone, city, address, items } = req.body || {};
   if (!name || String(name).trim().length < 2)
@@ -214,7 +210,6 @@ app.post('/api/orders', (req, res) => {
   res.json({ ok: true, order_number, total });
 });
 
-/* ----- Public: contact messages ----- */
 app.post('/api/messages', (req, res) => {
   const { name, email, phone, message } = req.body || {};
   if (!name || String(name).trim().length < 2)
@@ -229,7 +224,6 @@ app.post('/api/messages', (req, res) => {
   res.json({ ok: true });
 });
 
-/* ----- Public: CMS content ----- */
 function allContent() {
   const rows = db.prepare('SELECT key, value FROM site_content').all();
   const out = {};
@@ -246,7 +240,7 @@ app.get('/api/content/:key', (req, res) => {
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
-/* ----- Admin: orders & messages ----- */
+// admin: faut le token
 app.get('/api/orders', adminAuth, (req, res) => {
   res.json(db.prepare('SELECT * FROM orders ORDER BY id DESC').all());
 });
@@ -254,7 +248,6 @@ app.get('/api/messages', adminAuth, (req, res) => {
   res.json(db.prepare('SELECT * FROM messages ORDER BY id DESC').all());
 });
 
-/* ----- Admin: CMS content update ----- */
 app.put('/api/admin/content/:key', adminAuth, (req, res) => {
   if (!('value' in (req.body || {})))
     return res.status(400).json({ error: 'Champ "value" requis' });
@@ -263,7 +256,7 @@ app.put('/api/admin/content/:key', adminAuth, (req, res) => {
   res.json({ ok: true, key: req.params.key });
 });
 
-/* ----- Admin: product management ----- */
+// gestion produits (upload images via busboy)
 const CATEGORIES = ['homme', 'femme', 'pack', 'unisexe'];
 const IMG_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif']);
 const MAX_FILE = 8 * 1024 * 1024;
@@ -420,10 +413,9 @@ app.delete('/api/admin/products/:id', adminAuth, (req, res) => {
   res.json({ ok: true });
 });
 
-/* ----- Static site ----- */
 app.use(express.static(PUBLIC, { extensions: ['html'] }));
 
-/* Dynamic product pages: /produit/<handle> and /produit/<handle>.html */
+// /produit/<handle> -> le meme template pour tous les produits
 app.get(['/produit/:handle', '/produit/:handle.html'], (req, res) => {
   res.sendFile(path.join(PUBLIC, 'produit.html'));
 });

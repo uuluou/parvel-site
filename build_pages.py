@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates all ParVel static pages from shared templates + seed data."""
+# genere les pages statiques (templates + data). lance une fois, ca ecrase public/
 import json, os, re
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -9,7 +9,7 @@ site = json.load(open(os.path.join(ROOT, 'site.json'), encoding='utf-8'))
 def esc(s):
     return (s or '').replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
 
-# ---------- inline SVG icons ----------
+# inline svg icons
 ICONS = {
     'search': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>',
     'cart': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6L5 3H2"/><circle cx="9" cy="20" r="1.6"/><circle cx="17" cy="20" r="1.6"/></svg>',
@@ -152,7 +152,7 @@ def write(path, content):
     open(full, 'w', encoding='utf-8').write(content)
     print('wrote', path, len(content), 'bytes')
 
-# ---------- index.html ----------
+# index.html
 def page_index():
     reviews = site['reviews_homepage']
     photos = ['fe89ee9fa055_WhatsApp_Image_2026-09-16_at_12.06.59.jpg',
@@ -293,7 +293,7 @@ def page_index():
 '''
     write('index.html', body)
 
-# ---------- shop.html ----------
+# shop.html
 def page_shop():
     body = f'''{head("Tous les gels douche parfumés", "Tous les gels douche parfumés ParVel: 18 fragrances inspirées des grands parfums. Paiement à la livraison.")}
 {header()}
@@ -318,7 +318,7 @@ def page_shop():
 '''
     write('shop.html', body)
 
-# ---------- collections ----------
+# collections
 def page_collection(key, title, desc, filt):
     body = f'''{head(title, desc)}
 {header()}
@@ -332,7 +332,7 @@ def page_collection(key, title, desc, filt):
 '''
     write(f'collections/{key}.html', body)
 
-# ---------- produit.html (dynamic template) ----------
+# produit.html (dynamic template)
 def page_produit():
     body = f'''{head("Produit", "Gel douche parfumé ParVel. Paiement à la livraison partout au Maroc.")}
 {header()}
@@ -459,7 +459,7 @@ def page_produit():
 '''
     write('produit.html', body)
 
-# ---------- histoire.html ----------
+# histoire.html
 def page_histoire():
     body = f'''{head("Notre histoire", "L'histoire de ParVel: des gels douche parfumés pour transformer votre routine en moment de plaisir.")}
 {header()}
@@ -480,7 +480,7 @@ def page_histoire():
 '''
     write('histoire.html', body)
 
-# ---------- faq.html ----------
+# faq.html
 def page_faq():
     body = f'''{head("Questions fréquentes", "FAQ ParVel: peaux sensibles, choix du parfum, utilisation quotidienne.")}
 {header()}
@@ -499,7 +499,7 @@ def page_faq():
 '''
     write('faq.html', body)
 
-# ---------- contact.html ----------
+# contact.html
 def page_contact():
     body = f'''{head("Contact", "Contactez ParVel: parvelma@outlook.com.")}
 {header('contact')}
@@ -558,7 +558,7 @@ document.querySelector('[data-cform]').addEventListener('submit', async e => {{
 '''
     write('contact.html', body)
 
-# ---------- panier.html ----------
+# panier.html
 def page_panier():
     body = f'''{head("Panier", "Votre panier ParVel.")}
 {header()}
@@ -619,7 +619,7 @@ def page_panier():
 '''
     write('panier.html', body)
 
-# ---------- commande.html ----------
+# commande.html
 def page_commande():
     body = f'''{head("Commander", "Commande ParVel, paiement à la livraison.")}
 {header()}
@@ -678,7 +678,7 @@ def page_commande():
 '''
     write('commande.html', body)
 
-# ---------- privacy.html ----------
+# privacy.html
 def page_privacy():
     body = f'''{head("Politique de confidentialité", "Politique de confidentialité ParVel.")}
 {header()}
@@ -701,7 +701,7 @@ def page_privacy():
 '''
     write('privacy.html', body)
 
-# ---------- admin.html ----------
+# admin.html
 def page_admin():
     body = f'''{head("Administration", "Back-office ParVel.")}
 {header()}
@@ -711,7 +711,7 @@ def page_admin():
 '''
     write('admin.html', body)
 
-# ---------- 404.html ----------
+# 404.html
 def page_404():
     body = f'''{head("Page introuvable", "Page introuvable.")}
 {header()}

@@ -1,4 +1,4 @@
-/* cart.js: localStorage cart + drawer, totals, free-shipping progress. */
+// panier en localStorage + tiroir lateral
 (function () {
   'use strict';
   const KEY = 'parvel_cart_v1';
