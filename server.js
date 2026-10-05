@@ -417,6 +417,23 @@ app.delete('/api/admin/products/:id', adminAuth, (req, res) => {
   res.json({ ok: true });
 });
 
+const OPT_DIR = path.join(PUBLIC, 'assets', 'opt');
+const optFiles = new Set();
+try { for (const f of fs.readdirSync(OPT_DIR)) optFiles.add(f); } catch {}
+app.use('/assets', (req, res, next) => {
+  const m = /^\/([^/]+)\.(png|jpe?g)$/i.exec(req.path);
+  if (m) {
+    const webp = m[1] + '.webp';
+    if (optFiles.has(webp)) {
+      res.type('image/webp');
+      return res.sendFile(path.join(OPT_DIR, webp));
+    }
+  } else if (req.path === '/video-hero.mp4' && optFiles.has('video-hero.mp4')) {
+    res.type('video/mp4');
+    return res.sendFile(path.join(OPT_DIR, 'video-hero.mp4'));
+  }
+  next();
+});
 app.use(express.static(PUBLIC, { extensions: ['html'] }));
 
 // /produit/<handle> -> le meme template pour tous les produits
