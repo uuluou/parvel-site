@@ -1,9 +1,11 @@
-// back-office. token requis.
+
+
 (function () {
   'use strict';
   const root = document.querySelector('[data-admin]');
   if (!root) return;
 
+  var _draft = null;
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   let token = sessionStorage.getItem('parvel_admin_token') || '';
 
@@ -71,11 +73,11 @@
   }
 
   function renderTab() {
+    console.log('admin tab:', tab);
     const body = root.querySelector('[data-tab-body]');
     ({ produits: vProduits, contenu: vContenu, avis: vAvis, faq: vFaq, reglages: vReglages, commandes: vCommandes, messages: vMessages })[tab](body);
   }
 
-  // produits
   async function vProduits(body) {
     body.innerHTML = '<p>Chargement...</p>';
     const prods = await (await api('/api/products')).json();
@@ -91,6 +93,7 @@
           </div>
           <div class="field"><label>Description</label><textarea name="description" rows="4"></textarea></div>
           <div class="field"><label><input type="checkbox" name="available" checked style="width:auto"> En stock</label></div>
+          <div class="field"><label>Stock (vide = illimité)</label><input name="stock" type="number" min="0" step="1" placeholder="Illimité"></div>
           <div class="field"><label>Images (principale + galerie)</label><input type="file" name="images" accept="image/*" multiple><div class="img-preview" data-prev></div></div>
           <p class="err" data-perr></p>
           <button class="btn btn-gold" type="submit">Ajouter le produit</button>
@@ -104,7 +107,7 @@
         <td><strong>${esc(p.title)}</strong><br><small style="color:var(--muted)">${esc(p.handle)}</small></td>
         <td>${Number(p.price).toFixed(2)} dh${p.compare_at ? `<br><s style="color:var(--muted)">${Number(p.compare_at).toFixed(2)}</s>` : ''}</td>
         <td>${esc(p.category)}</td>
-        <td>${p.available ? 'En stock' : 'Épuisé'}</td>
+        <td>${p.available ? 'En stock' : 'Épuisé'}${p.stock != null ? `<br><small style="color:var(--muted)">Stock: ${p.stock}</small>` : ''}</td>
         <td style="white-space:nowrap"><button class="btn btn-ghost btn-sm" data-edit="${p.id}">Modifier</button>
         <button class="btn btn-danger btn-sm" data-del="${p.id}">Supprimer</button></td>
       </tr>`).join('')}
@@ -154,6 +157,7 @@
         </div>
         <div class="field"><label>Description</label><textarea name="description" rows="4">${esc(p.description)}</textarea></div>
         <div class="field"><label><input type="checkbox" name="available"${p.available ? ' checked' : ''} style="width:auto"> En stock</label></div>
+        <div class="field"><label>Stock (vide = illimité)</label><input name="stock" type="number" min="0" step="1" value="${p.stock == null ? '' : p.stock}" placeholder="Illimité"></div>
         <div class="field"><label>Images actuelles</label><div class="img-preview">
           ${p.images.map(im => `<label style="cursor:pointer"><input type="checkbox" name="keep" value="${esc(im)}" checked style="display:none"><img src="/${esc(im)}" title="Décocher pour retirer"></label>`).join('')}
         </div><small style="color:var(--muted)">Cliquez sur une image pour la retirer (elle se grise).</small></div>
@@ -187,7 +191,6 @@
     });
   }
 
-  // contenu page d'accueil
   function putKey(key, value) {
     return api('/api/admin/content/' + key, {
       method: 'PUT', headers: { 'Content-Type': 'application/json' },
@@ -257,7 +260,6 @@
     });
   }
 
-  // avis clients
   async function vAvis(body) {
     const render = () => {
       const home = content.reviews_home || [], prod = content.reviews_product || [];
@@ -314,7 +316,6 @@
     render();
   }
 
-  // faq
   async function vFaq(body) {
     const render = () => {
       const faq = content.faq || [];
@@ -358,7 +359,6 @@
     render();
   }
 
-  // reglages
   async function vReglages(body) {
     const s = content.settings || {};
     body.innerHTML = `<form data-sform class="admin-form"><h3>Réglages du site</h3>
@@ -387,7 +387,6 @@
     });
   }
 
-  // commandes + messages
   async function vCommandes(body) {
     body.innerHTML = '<p>Chargement...</p>';
     const orders = await (await api('/api/orders')).json();
