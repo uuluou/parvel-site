@@ -345,7 +345,18 @@ footer ul a:hover { opacity: 1; color: var(--champagne); }
 .confirm-box .big-check svg { width: 40px; height: 40px; }
 .order-num { font-family: var(--serif); font-size: 1.8rem; color: var(--green); letter-spacing: 0.06em; }
 
-.admin-login { max-width: 420px; margin: 4rem auto; }
+.admin-login { max-width: 420px; margin: 4rem auto; text-align: center; padding: 2.4rem 2rem; }
+.admin-login .eyebrow { margin-bottom: 0.4rem; }
+.admin-login h1 { font-size: 1.9rem; margin: 0 0 0.4rem; }
+.admin-login-logo { width: 120px; height: auto; margin-bottom: 1.2rem; }
+.admin-login-sub { color: var(--muted); font-size: 0.95rem; margin: 0 0 1.4rem; }
+.admin-login .field { text-align: start; }
+.admin-login .err { min-height: 1.4em; }
+.admin-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.6rem 0 0.4rem; }
+.stat-card { background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 1.2rem 1rem; text-align: center; }
+.stat-num { display: block; font-family: var(--serif); font-size: 1.7rem; color: var(--espresso); }
+.stat-label { font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+@media (max-width: 640px) { .admin-stats { grid-template-columns: repeat(2, 1fr); } }
 .admin-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1.6rem 0; border-bottom: 2px solid var(--line); padding-bottom: 0.8rem; }
 .admin-tab { border: 0; background: none; font: inherit; font-weight: 600; padding: 0.6rem 1rem; cursor: pointer; color: var(--muted); border-radius: 10px; }
 .admin-tab.active { color: var(--espresso); background: var(--gold-soft); }
