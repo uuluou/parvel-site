@@ -7,36 +7,42 @@
 
   var _draft = null;
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  let token = sessionStorage.getItem('parvel_admin_token') || '';
 
   function api(path, opts) {
-    opts = opts || {};
-    const sep = path.includes('?') ? '&' : '?';
-    const headers = Object.assign({}, opts.headers || {}, { 'Authorization': 'Bearer ' + token });
-    return fetch(path + sep + 'token=' + encodeURIComponent(token), Object.assign({}, opts, { headers }));
+    return fetch(path, opts || {});
   }
 
   function loginView() {
     root.innerHTML = `<div class="admin-login form-card">
+      <img class="admin-login-logo" src="/assets/b8df5ff18b8e_parvel-logo-png.png" alt="ParVel">
       <p class="eyebrow">Administration</p>
-      <h1 class="serif" style="font-size:2rem">Espace admin ParVel</h1>
-      <div class="field"><label for="adm-token">Jeton d'administration</label>
-        <input id="adm-token" type="password" placeholder="ADMIN_TOKEN" autocomplete="off">
+      <h1 class="serif">Espace admin</h1>
+      <p class="admin-login-sub">Entrez votre mot de passe pour gérer la boutique.</p>
+      <div class="field"><label for="adm-pass">Mot de passe</label>
+        <input id="adm-pass" type="password" placeholder="Votre mot de passe" autocomplete="current-password">
         <p class="err" data-login-err></p></div>
       <button class="btn btn-dark btn-block" data-login>Se connecter</button>
     </div>`;
     const go = async () => {
-      token = document.getElementById('adm-token').value.trim();
-      const r = await fetch('/api/orders?token=' + encodeURIComponent(token));
-      if (r.status === 401) {
-        document.querySelector('[data-login-err]').textContent = 'Jeton invalide.';
+      const pw = document.getElementById('adm-pass').value;
+      const err = document.querySelector('[data-login-err]');
+      err.textContent = '';
+      let r;
+      try {
+        r = await fetch('/api/admin/login', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: pw })
+        });
+      } catch { err.textContent = 'Erreur de connexion.'; return; }
+      if (!r.ok) {
+        const out = await r.json().catch(() => ({}));
+        err.textContent = out.error || 'Mot de passe incorrect.';
         return;
       }
-      sessionStorage.setItem('parvel_admin_token', token);
       mainView();
     };
     root.querySelector('[data-login]').addEventListener('click', go);
-    root.querySelector('#adm-token').addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+    root.querySelector('#adm-pass').addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
   }
 
   const TABS = [
@@ -48,6 +54,18 @@
 
   async function mainView() {
     try { content = await (await api('/api/content')).json(); } catch { content = {}; }
+    let stats = { orders: 0, revenue: 0, products: 0, messages: 0 };
+    try {
+      const [orders, prods, msgs] = await Promise.all([
+        api('/api/orders').then(r => r.json()),
+        api('/api/products').then(r => r.json()),
+        api('/api/messages').then(r => r.json())
+      ]);
+      stats.orders = orders.length;
+      stats.revenue = orders.reduce((s, o) => s + Number(o.total || 0), 0);
+      stats.products = prods.length;
+      stats.messages = msgs.length;
+    } catch {}
     root.innerHTML = `
       <div class="wrap" style="padding:2rem 0 4rem">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
@@ -57,12 +75,19 @@
             <button class="btn btn-ghost btn-sm" data-logout>Déconnexion</button>
           </div>
         </div>
+        <div class="admin-stats">
+          <div class="stat-card"><span class="stat-num">${stats.orders}</span><span class="stat-label">Commandes</span></div>
+          <div class="stat-card"><span class="stat-num">${stats.revenue.toFixed(0)} dh</span><span class="stat-label">Chiffre d'affaires</span></div>
+          <div class="stat-card"><span class="stat-num">${stats.products}</span><span class="stat-label">Produits</span></div>
+          <div class="stat-card"><span class="stat-num">${stats.messages}</span><span class="stat-label">Messages</span></div>
+        </div>
         <div class="admin-tabs">${TABS.map(([k, l]) =>
           `<button class="admin-tab${k === tab ? ' active' : ''}" data-tab="${k}">${l}</button>`).join('')}</div>
         <div data-tab-body></div>
       </div>`;
-    root.querySelector('[data-logout]').addEventListener('click', () => {
-      sessionStorage.removeItem('parvel_admin_token'); token = ''; loginView();
+    root.querySelector('[data-logout]').addEventListener('click', async () => {
+      try { await fetch('/api/admin/logout', { method: 'POST' }); } catch {}
+      loginView();
     });
     root.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => {
       tab = b.dataset.tab;
@@ -413,10 +438,8 @@
       </tbody></table></div>` : '<p class="note">Aucun message pour le moment.</p>'}`;
   }
 
-  if (token) {
-    fetch('/api/orders?token=' + encodeURIComponent(token)).then(r => {
-      if (r.status === 401) { sessionStorage.removeItem('parvel_admin_token'); token = ''; loginView(); }
-      else mainView();
-    }).catch(() => loginView());
-  } else loginView();
+  fetch('/api/orders').then(r => {
+    if (r.status === 401) loginView();
+    else mainView();
+  }).catch(() => loginView());
 })();
