@@ -1,0 +1,163 @@
+{
+ "store": "ParVel",
+ "domain": "https://parvel.ma",
+ "announcement_bar": "Livraison gratuite à Partir de 300 dh (marquee, répété)",
+ "nav": [
+  {
+   "label": "ACCUIEL",
+   "href": "/"
+  },
+  {
+   "label": "GELS DOUCHE HOMME",
+   "href": "/collections/gel-douche-parfume-homme"
+  },
+  {
+   "label": "GELS DOUCHE FEMME",
+   "href": "/collections/gel-douche-parfume"
+  },
+  {
+   "label": "Contact",
+   "href": "/pages/contact"
+  }
+ ],
+ "collections": {
+  "gel-douches-parfumes": {
+   "title": "Gel douche parfumé",
+   "count": 17
+  },
+  "gel-douche-parfume-homme": {
+   "title": "Gel douche parfumé homme",
+   "count": 9
+  },
+  "gel-douche-parfume": {
+   "title": "Gel douche parfumé femme",
+   "count": 8
+  },
+  "tous-les-gels-douche-parvel-parfumes": {
+   "title": null,
+   "status": 404
+  }
+ },
+ "footer": {
+  "brand_block": {
+   "title": "ParVel Bath & Co.",
+   "text": "Découvrez les gels douche parfumés ParVel, avec des fragrances fraîches, fruitées, florales et boisées. Livraison partout au Maroc."
+  },
+  "info_links": [
+   {
+    "label": "Gels Douche Parfumés",
+    "href": "/collections/gel-douches-parfumes"
+   },
+   {
+    "label": "Gel Douche Parfumé Femme",
+    "href": "/collections/gel-douche-parfume"
+   },
+   {
+    "label": "Gel Douche Parfumé Homme",
+    "href": "/collections/gel-douche-parfume-homme"
+   }
+  ],
+  "contact_info": {
+   "email": "parvelma@outlook.com"
+  },
+  "socials": [
+   {
+    "label": "Instagram",
+    "href": "https://www.instagram.com/parvel.ma"
+   },
+   {
+    "label": "TikTok",
+    "href": "https://www.tiktok.com/@parvelmaroc"
+   }
+  ],
+  "copyright": "© 2026, ParVel. All rights reserved.",
+  "legal": [
+   {
+    "label": "Politique de confidentialité",
+    "href": "/policies/privacy-policy"
+   }
+  ]
+ },
+ "badges": [
+  "SANS ALCOOL / FREE PARABEN, SILICON",
+  "PAIMENT A LA LIVRAISON"
+ ],
+ "marquee": [
+  "Stock Limité !",
+  "Cadeau Inclus 🎁"
+ ],
+ "videos": {
+  "hero_mp4": "https://parvel.ma/cdn/shop/videos/c/vp/e45905431b744bafa086ef7f6079ce28/e45905431b744bafa086ef7f6079ce28.HD-1080p-7.2Mbps-94511137.mp4?v=0",
+  "hero_m3u8": "https://parvel.ma/cdn/shop/videos/c/vp/e45905431b744bafa086ef7f6079ce28/e45905431b744bafa086ef7f6079ce28.m3u8?v=0",
+  "hero_poster": "https://parvel.ma/cdn/shop/files/preview_images/e45905431b744bafa086ef7f6079ce28.thumbnail.0000000000.jpg?v=1789498671&width=1920",
+  "local_mp4": "assets/video-hero.mp4"
+ },
+ "logo": {
+  "header_png": "assets/b8df5ff18b8e_parvel-logo-png.png",
+  "header_alt": "assets/710b72cd9b06_parvel-logo-png-2.png",
+  "footer_white": "assets/079e3d8bad4d_parvel-logo-white-png.png",
+  "favicon": "assets/b366d73b4b9c_parvel-favicon-png.png"
+ },
+ "reviews_homepage": [
+  {
+   "stars": 5,
+   "title": "تخاطيف عليهم هههه",
+   "text": "Bonjour cv wslatni la commande saraha zwinin Bazaf ori7aaa waw merci beaucoup pour le service",
+   "author": "Malak_jou_"
+  },
+  {
+   "stars": 5,
+   "title": "kndwch bihum f la salle",
+   "text": "Kandihum m3aya la salle saraha waaa3rin ga3 shabi swlonii mnin khdithom aama tabat m3ndi mngol",
+   "author": "Amine_Agadir"
+  },
+  {
+   "stars": 5,
+   "title": "La qualité est top",
+   "text": "stronger with you waa3er. Ça sent classe toute la journée même après une séance de sport. Le packaging est classe, j'ai pris le pack de 4. Merci!",
+   "author": "khalid_casa"
+  }
+ ],
+ "reviews_product_page": [
+  {
+   "stars": 5,
+   "title": "La qualité est top",
+   "text": "Light blue waa3er. Ça sent frais toute la journée même après une séance de sport. Le packaging est classe, j'ai pris le pack de 3. Merci!",
+   "author": "khalid_casa"
+  },
+  {
+   "stars": 5,
+   "title": "تخاطيف عليهم هههه",
+   "text": "jebthom lyom ldar tkhatfo 3lihom nadet rwiina mymknch xhal 3jbohom' merci bcpp",
+   "author": "Malak_jou_"
+  },
+  {
+   "stars": 5,
+   "title": "kndwch bihum f la salle",
+   "text": "Kandihum m3aya la salle saraha waaa3rin ga3 shabi swlonii mnin khdithom aama tabat m3ndi mngol",
+   "author": "Amine_Agadir"
+  }
+ ],
+ "faq": [
+  {
+   "q": "EST-CE QUE LES GELS DOUCHES PARVEL CONVIENNENT AUX PEAUX SENSIBLES ?",
+   "a": "Oui. Nos formules sont conçues pour nettoyer la peau tout en préservant son confort. Pour les peaux sensibles, nous recommandons de vérifier la liste des ingrédients avant utilisation et d’interrompre l’utilisation en cas de réaction."
+  },
+  {
+   "q": "QUEL GEL DOUCHE PARFUMÉ CHOISIR ?",
+   "a": "Le choix dépend avant tout de la fragrance que vous aimez et de l’expérience parfumée que vous recherchez. ParVel propose différentes fragrances, afin de vous permettre de choisir celle qui correspond le mieux à vos préférences."
+  },
+  {
+   "q": "QUELLE DIFFÉRENCE ENTRE UN GEL DOUCHE PARFUMÉ ET UN GEL DOUCHE CLASSIQUE ?",
+   "a": "Un gel douche parfumé associe le nettoyage sous la douche à une fragrance. Le choix d’un gel douche parfumé permet ainsi d’intégrer une dimension olfactive à votre routine quotidienne."
+  },
+  {
+   "q": "LES GELS DOUCHES SONT-ILS POUR HOMMES, FEMMES OU UNISEXE ?",
+   "a": "ParVel propose différentes fragrances adaptées à plusieurs préférences. Certaines sont orientées vers des univers féminins ou masculins, tandis que d’autres peuvent convenir aussi bien aux femmes qu’aux hommes."
+  },
+  {
+   "q": "PEUT-ON UTILISER CES GELS DOUCHES TOUS LES JOURS ?",
+   "a": "Oui. Ils sont conçus pour s’intégrer à votre routine quotidienne, matin ou soir. Vous pouvez choisir votre fragrance selon vos préférences et votre routine."
+  }
+ ]
+}

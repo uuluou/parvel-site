@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commander | ParVel</title>
+<meta name="description" content="Commande ParVel, paiement à la livraison.">
+<link rel="icon" type="image/png" href="/assets/b366d73b4b9c_parvel-favicon-png.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+
+<div class="announce" aria-label="Annonce"><div class="announce-track" data-content="announcement_text" data-announce>
+<span>Livraison gratuite à Partir de 300 dh <i>✦</i> Livraison gratuite à Partir de 300 dh <i>✦</i> Livraison gratuite à Partir de 300 dh <i>✦</i> Livraison gratuite à Partir de 300 dh <i>✦</i> Livraison gratuite à Partir de 300 dh <i>✦</i> Livraison gratuite à Partir de 300 dh <i>✦</i> </span><span aria-hidden="true">Livraison gratuite à Partir de 300 dh <i>✦</i> Livraison gratuite à Partir de 300 dh <i>✦</i> Livraison gratuite à Partir de 300 dh <i>✦</i> Livraison gratuite à Partir de 300 dh <i>✦</i> Livraison gratuite à Partir de 300 dh <i>✦</i> Livraison gratuite à Partir de 300 dh <i>✦</i> </span></div></div>
+<header class="site-header"><div class="wrap header-inner">
+  <button class="icon-btn burger" data-burger aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+  <a class="logo" href="/" aria-label="ParVel accueil"><img src="/assets/b8df5ff18b8e_parvel-logo-png.png" alt="ParVel"></a>
+  <nav class="main-nav" aria-label="Navigation principale">
+    <a href="/">ACCUEIL</a>
+    <a href="/collections/homme.html">GELS DOUCHE HOMME</a>
+    <a href="/collections/femme.html">GELS DOUCHE FEMME</a>
+    <a href="/contact.html">Contact</a>
+  </nav>
+  <div class="header-icons">
+    <a class="icon-btn" data-social="instagram" href="https://www.instagram.com/parvel.ma" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" stroke="none"/></svg></a>
+    <a class="icon-btn" data-social="tiktok" href="https://www.tiktok.com/@parvelmaroc" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 3c.4 2.1 1.8 3.6 4 3.9v3c-1.6 0-3-.5-4-1.3v6.6c0 3.9-2.9 6.3-6.3 6.3A6.1 6.1 0 0 1 4 15.4c0-3.4 2.7-6.1 6.2-6.1.3 0 .7 0 1 .1v3.2a3 3 0 0 0-1-.2 3 3 0 0 0-3 3 3 3 0 0 0 3.1 3c1.7 0 3-1.3 3-3.2V3h3.3z"/></svg></a>
+    <button class="icon-btn" data-search-open aria-label="Recherche"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+    <button class="icon-btn" data-cart-open aria-label="Panier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6L5 3H2"/><circle cx="9" cy="20" r="1.6"/><circle cx="17" cy="20" r="1.6"/></svg><span class="cart-count" data-cart-count style="display:none">0</span></button>
+  </div>
+</div></header>
+<nav class="mobile-nav" data-mobile-nav aria-label="Menu mobile">
+  <button class="icon-btn close-x" data-mobile-close aria-label="Fermer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <a href="/">Accueil</a>
+  <a href="/collections/homme.html">Gels douche homme</a>
+  <a href="/collections/femme.html">Gels douche femme</a>
+  <a href="/collections/packs.html">Packs</a>
+  <a href="/shop.html">Tous les produits</a>
+  <a href="/contact.html">Contact</a>
+</nav>
+<div class="search-overlay" data-search-overlay>
+  <div class="wrap" style="max-width:760px">
+    <div style="display:flex;justify-content:flex-end"><button class="icon-btn" data-search-close aria-label="Fermer la recherche"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <input data-search-input type="search" placeholder="Rechercher un parfum..." aria-label="Rechercher">
+    <div data-search-results style="margin-top:1.6rem;display:grid;gap:0.8rem"></div>
+  </div>
+</div>
+<div class="overlay" data-overlay></div>
+<aside class="drawer" data-cart-drawer aria-label="Panier">
+  <div class="drawer-head"><h3>Panier</h3><button class="icon-btn" data-cart-close aria-label="Fermer le panier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="drawer-body" data-cart-items></div>
+  <div class="drawer-foot" data-cart-foot></div>
+</aside>
+<main><section><div class="wrap" data-checkout>
+  <div class="page-head"><span class="eyebrow">Paiement à la livraison</span><h1>Commander</h1>
+    <p class="lead">Pas de carte requise, vous payez le livreur en espèces.</p></div>
+  <div class="steps">
+    <span class="step-dot" data-dot><i>1</i> Vos infos</span>
+    <span class="step-dot" data-dot><i>2</i> Récapitulatif</span>
+    <span class="step-dot" data-dot><i>3</i> Confirmation</span>
+  </div>
+
+  <div data-step="infos"><div class="form-card">
+    <div class="grid-2">
+      <div class="field"><label for="co-name">Nom complet *</label><input id="co-name" autocomplete="name"><p class="err"></p></div>
+      <div class="field"><label for="co-phone">Téléphone *</label><input id="co-phone" type="tel" placeholder="0612345678" autocomplete="tel"><p class="err"></p></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label for="co-city">Ville *</label><input id="co-city" autocomplete="address-level2"><p class="err"></p></div>
+      <div class="field"><label for="co-address">Adresse *</label><input id="co-address" placeholder="Rue, quartier..." autocomplete="street-address"><p class="err"></p></div>
+    </div>
+    <div class="cod-strip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v8H3zM14 10h4l4 4v1h-8z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg> On vous appelle pour confirmer avant l'envoi.</div>
+    <button class="btn btn-gold btn-block" data-to-recap>Continuer</button>
+  </div></div>
+
+  <div data-step="recap" style="display:none"><div class="checkout-grid">
+    <div class="form-card" style="margin:0;max-width:none">
+      <h3>Votre commande</h3>
+      <div data-recap-items style="display:grid;gap:1rem;margin:1.2rem 0"></div>
+      <h3>Vos infos</h3>
+      <p><strong data-recap-name></strong><br><span dir="ltr" data-recap-phone></span><br><span data-recap-addr></span></p>
+      <p class="err" data-order-error></p>
+      <div style="display:flex;gap:0.7rem;flex-wrap:wrap">
+        <button class="btn btn-ghost" data-back-infos>Retour</button>
+        <button class="btn btn-gold" style="flex:1" data-confirm>Confirmer la commande</button>
+      </div>
+    </div>
+    <aside class="summary"><h3>Récapitulatif</h3>
+      <div class="totals"><span>Total à payer à la livraison</span><span data-recap-total></span></div>
+      <p class="ship-note" style="margin-top:0.8rem">Livraison gratuite à partir de 300 dh.</p>
+    </aside>
+  </div></div>
+
+  <div data-step="done" style="display:none"><div class="confirm-box">
+    <div class="big-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 12.5l5 5L20 6.5"/></svg></div>
+    <p class="eyebrow">Commande confirmée</p>
+    <h2 class="serif">Merci !</h2>
+    <p class="lead">Votre commande <span class="order-num" data-order-num></span> est enregistrée.<br>
+    On vous appelle très vite pour confirmer, puis on l'envoie.<br>
+    Total à payer à la livraison: <strong data-order-total></strong></p>
+    <a class="btn btn-dark" href="/shop.html" style="margin-top:1rem">Continuer mes achats</a>
+  </div></div>
+</div></section></main>
+<footer><div class="wrap">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="/assets/079e3d8bad4d_parvel-logo-white-png.png" alt="ParVel">
+      <h3 data-content="brand_block_title">ParVel Bath &amp; Co.</h3>
+      <p data-content="brand_block_text">Découvrez les gels douche parfumés ParVel, avec des fragrances fraîches, fruitées, florales et boisées. Livraison partout au Maroc.</p>
+      <div class="socials">
+        <a data-social="instagram" href="https://www.instagram.com/parvel.ma" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" stroke="none"/></svg></a>
+        <a data-social="tiktok" href="https://www.tiktok.com/@parvelmaroc" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 3c.4 2.1 1.8 3.6 4 3.9v3c-1.6 0-3-.5-4-1.3v6.6c0 3.9-2.9 6.3-6.3 6.3A6.1 6.1 0 0 1 4 15.4c0-3.4 2.7-6.1 6.2-6.1.3 0 .7 0 1 .1v3.2a3 3 0 0 0-1-.2 3 3 0 0 0-3 3 3 3 0 0 0 3.1 3c1.7 0 3-1.3 3-3.2V3h3.3z"/></svg></a>
+      </div>
+    </div>
+    <div><h4>Informations</h4><ul>
+      <li><a href="/shop.html">Gels Douche Parfumés</a></li>
+      <li><a href="/collections/femme.html">Gel Douche Parfumé Femme</a></li>
+      <li><a href="/collections/homme.html">Gel Douche Parfumé Homme</a></li>
+      <li><a href="/collections/packs.html">Packs</a></li>
+      <li><a href="/histoire.html">Notre histoire</a></li>
+      <li><a href="/faq.html">FAQ</a></li>
+    </ul></div>
+    <div><h4>Contact</h4><ul>
+      <li><a data-content="email" href="mailto:parvelma@outlook.com">parvelma@outlook.com</a></li>
+      <li><a href="/contact.html">Nous écrire</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span data-content="copyright">© 2026, ParVel. All rights reserved.</span>
+    <a href="/privacy.html">Politique de confidentialité</a>
+  </div>
+</div></footer>
+<script src="/js/site.js" defer></script>
+<script src="/js/cart.js" defer></script>
+<script src="/js/checkout.js" defer></script>
+</body>
+</html>
+

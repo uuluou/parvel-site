@@ -1,0 +1,1 @@
+{"dependencies":{"busboy":"^1.6.0","express":"^4.21.2"},"description":"ParVel, gels douche parfumés, site complet avec backend Express + SQLite","engines":{"node":">=24"},"main":"server.js","name":"parvel-site","scripts":{"start":"node server.js"},"version":"1.0.0"}
