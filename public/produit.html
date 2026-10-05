@@ -133,7 +133,8 @@
           <div class="pdp-price">${money(p.price)}
             ${promo ? `<span class="old">${money(p.compare_at)}</span><span class="save">SAVE</span>` : ''}</div>
           <div class="cod-strip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v8H3zM14 10h4l4 4v1h-8z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg> Paiement à la livraison, en espèces</div>
-          ${p.available ? `
+          ${p.stock != null && p.stock > 0 && p.stock <= 5 ? `<div class="stock-low">Plus que ${p.stock} en stock, commandez vite.</div>` : ''}
+          ${p.available && (p.stock == null || p.stock > 0) ? `
           <div class="pdp-ctas" data-qty-wrap>
             <div class="qty-row">
               <div class="qty"><button data-qminus aria-label="Diminuer">−</button>
