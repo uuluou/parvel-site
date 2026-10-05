@@ -1,4 +1,5 @@
 'use strict';
+
 // backend ParVel: express + sqlite (node 24). rien de sorcier.
 
 const express = require('express');
@@ -9,14 +10,17 @@ const crypto = require('crypto');
 const Busboy = require('busboy');
 
 const PORT = process.env.PORT || 3000;
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'parvel-admin-demo';
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
+if (!ADMIN_TOKEN) {
+  console.error("FATAL: set the ADMIN_TOKEN env var before starting.");
+  process.exit(1);
+  }
 const ROOT = __dirname;
 const PUBLIC = path.join(ROOT, 'public');
 const UPLOAD_DIR = path.join(PUBLIC, 'assets', 'uploads');
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
 const db = new DatabaseSync(path.join(ROOT, 'data.sqlite'));
-
 db.exec(`
 CREATE TABLE IF NOT EXISTS products (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
