@@ -1,4 +1,5 @@
-// menu, recherche, faq, reveals, contenu CMS
+
+
 (function () {
   'use strict';
 
@@ -33,16 +34,19 @@
     return allProducts;
   }
   function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
+  function fmtPrix(n) { return Number(n).toFixed(2) + ' dh'; }
   async function renderSearch(q) {
     if (!searchResults) return;
     const prods = await getProducts();
     q = q.trim().toLowerCase();
+
     const hits = q ? prods.filter(p => p.title.toLowerCase().includes(q)).slice(0, 6) : [];
     searchResults.innerHTML = hits.map(p => `
       <a class="card" style="flex-direction:row;align-items:center;padding:0.7rem;gap:1rem;text-decoration:none" href="/produit/${p.handle}.html">
         <img src="/${p.images[0] || ''}" alt="" style="width:64px;height:64px;object-fit:cover;border-radius:10px" loading="lazy">
         <span><strong class="serif" style="font-size:1.05rem">${esc(p.title)}</strong><br>
-        <span style="font-weight:700">${Number(p.price).toFixed(2)} dh</span></span>
+        <span style="font-weight:700">${fmtPrix(p.price)}</span></span>
       </a>`).join('') || (q ? '<p class="empty-state">Aucun résultat.</p>' : '');
   }
   if (searchInput) searchInput.addEventListener('input', e => renderSearch(e.target.value));
@@ -59,6 +63,7 @@
   });
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   if (!reduce && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver(entries => {
       entries.forEach(en => {
@@ -77,6 +82,7 @@
   }
 
   const header = document.querySelector('.site-header');
+
   if (header) {
     addEventListener('scroll', () => {
       header.style.boxShadow = scrollY > 8 ? '0 6px 24px rgba(36,26,18,0.08)' : 'none';
@@ -90,7 +96,7 @@
   function starRow() { return '★★★★★'; }
   function reviewCard(r) {
     const initial = (r.author || '?').trim().charAt(0).toUpperCase();
-    return `<article class="review reveal">
+    return `<article class="review reveal in">
       <div class="stars" aria-label="5 étoiles">${starRow()}</div>
       <h4>${esc(r.title || '')}</h4>
       <p>${esc(r.text || '')}</p>
@@ -110,10 +116,10 @@
   async function bindContent() {
     let c;
     try { c = await (await fetch('/api/content')).json(); }
-    catch { return; } // si l'api repond pas on garde le html d'origine
+    catch { return; }
     if (!c || typeof c !== 'object') return;
 
-    setText('announcement_text', null); // le bandeau defilant est gere juste en bas
+    setText('announcement_text', null);
     if (c.announcement_text) {
       const track = document.querySelector('[data-announce]');
       if (track) {
@@ -140,7 +146,7 @@
       document.querySelectorAll('[data-social="tiktok"]').forEach(a => { if (c.settings.tiktok) a.href = c.settings.tiktok; });
       if (c.settings.shipping_threshold) window.PARVEL_SHIP_THRESHOLD = Number(c.settings.shipping_threshold) || 300;
     }
-    // badges
+
     if (Array.isArray(c.badges)) {
       const wrap = document.querySelector('[data-badges]');
       if (wrap) {
@@ -152,14 +158,14 @@
           </div>`).join('');
       }
     }
-    // bandeau defilant
+
     if (Array.isArray(c.marquee_items) && c.marquee_items.length) {
       document.querySelectorAll('[data-marquee]').forEach(track => {
         const seq = c.marquee_items.map(t => `${esc(t)} <b>✦</b>`).join(' ');
         track.innerHTML = `<span>${seq} </span><span aria-hidden="true">${seq} </span>`;
       });
     }
-    // cartes collections
+
     if (Array.isArray(c.collections)) {
       const wrap = document.querySelector('[data-collections]');
       if (wrap) {
@@ -170,23 +176,22 @@
           </a>`).join('');
       }
     }
-    // avis page d'accueil
+
     if (Array.isArray(c.reviews_home) && c.reviews_home.length) {
       const wrap = document.querySelector('[data-reviews-home]');
       if (wrap) wrap.innerHTML = c.reviews_home.map(reviewCard).join('');
     }
-    // faq
+
     if (Array.isArray(c.faq) && c.faq.length) {
       document.querySelectorAll('[data-faq-list]').forEach(wrap => {
         wrap.innerHTML = c.faq.map(faqItem).join('');
       });
     }
-    // la video hero est en dur dans le html pour l'instant, a brancher sur le CMS plus tard
+
   }
   bindContent();
   window.ParVelContent = { bindContent, esc, reviewCard, faqItem };
 
-  // pour fermer le panier depuis l'overlay
   function closeCartDrawer() {
     const d = document.querySelector('[data-cart-drawer]');
     if (d) d.classList.remove('open');
