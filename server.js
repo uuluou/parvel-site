@@ -9,10 +9,38 @@ const Busboy = require("busboy");
 
 const PORT = process.env.PORT || 3000;
 
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
-if (!ADMIN_TOKEN) {
-  console.error("FATAL: set the ADMIN_TOKEN env var before starting.");
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || process.env.ADMIN_TOKEN;
+if (!ADMIN_PASSWORD) {
+  console.error("FATAL: set the ADMIN_PASSWORD env var before starting.");
   process.exit(1);
+}
+const ADMIN_HASH = crypto.createHash("sha256").update(ADMIN_PASSWORD).digest();
+
+const sessions = new Map();
+function newSession() {
+  const id = crypto.randomBytes(32).toString("hex");
+  sessions.set(id, Date.now() + 12 * 3600 * 1000);
+  return id;
+}
+function validSession(req) {
+  const cookies = req.headers.cookie || "";
+  const m = /(?:^|;\s*)pv_admin=([a-f0-9]{64})/.exec(cookies);
+  if (!m) return false;
+  const exp = sessions.get(m[1]);
+  if (!exp || exp < Date.now()) { sessions.delete(m[1]); return false; }
+  return true;
+}
+setInterval(() => {
+  const now = Date.now();
+  for (const [id, exp] of sessions) if (exp < now) sessions.delete(id);
+}, 3600 * 1000).unref();
+
+const loginAttempts = new Map();
+function loginAllowed(ip) {
+  const now = Date.now();
+  const arr = (loginAttempts.get(ip) || []).filter(t => now - t < 15 * 60 * 1000);
+  loginAttempts.set(ip, arr);
+  return arr.length < 10;
 }
 
 const ROOT = __dirname;
@@ -150,6 +178,30 @@ seedContent();
 var app = express();
 app.use(express.json({ limit: "2mb" }));
 
+app.post("/api/admin/login", (req, res) => {
+  const ip = req.ip || req.socket.remoteAddress || "?";
+  if (!loginAllowed(ip)) return res.status(429).json({ error: "Trop de tentatives, réessayez plus tard." });
+  loginAttempts.get(ip).push(Date.now());
+  const pw = String(req.body && req.body.password || "");
+  const hash = crypto.createHash("sha256").update(pw).digest();
+  if (pw && hash.length === ADMIN_HASH.length && crypto.timingSafeEqual(hash, ADMIN_HASH)) {
+    const sid = newSession();
+    const secure = req.secure || req.headers["x-forwarded-proto"] === "https";
+    res.setHeader("Set-Cookie",
+      `pv_admin=${sid}; HttpOnly; Path=/; SameSite=Lax; Max-Age=${12 * 3600}${secure ? "; Secure" : ""}`);
+    return res.json({ ok: true });
+  }
+  return res.status(401).json({ error: "Mot de passe incorrect." });
+});
+
+app.post("/api/admin/logout", (req, res) => {
+  const cookies = req.headers.cookie || "";
+  const m = /(?:^|;\s*)pv_admin=([a-f0-9]{64})/.exec(cookies);
+  if (m) sessions.delete(m[1]);
+  res.setHeader("Set-Cookie", "pv_admin=; HttpOnly; Path=/; SameSite=Lax; Max-Age=0");
+  res.json({ ok: true });
+});
+
 function productRow(r) {
   return {
     id: r.id, handle: r.handle, title: r.title,
@@ -164,9 +216,10 @@ function productRow(r) {
 }
 
 function adminAuth(req, res, next) {
+  if (validSession(req)) return next();
   const q = req.query.token;
   const h = (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
-  if (q === ADMIN_TOKEN || h === ADMIN_TOKEN) return next();
+  if ((q && q === ADMIN_PASSWORD) || (h && h === ADMIN_PASSWORD)) return next();
   return res.status(401).json({ error: "Unauthorized" });
 }
 
@@ -467,5 +520,5 @@ app.use((req, res) => {
 
 app.listen(PORT, () => {
   console.log(`ParVel en ligne sur http://localhost:${PORT}`);
-  console.log(`Admin: /admin.html (token: ${ADMIN_TOKEN})`);
+  console.log(`Admin: /admin.html`);
 });
