@@ -420,20 +420,24 @@ app.delete('/api/admin/products/:id', adminAuth, (req, res) => {
 const OPT_DIR = path.join(PUBLIC, 'assets', 'opt');
 const optFiles = new Set();
 try { for (const f of fs.readdirSync(OPT_DIR)) optFiles.add(f); } catch {}
+const LONG_CACHE = 'public, max-age=31536000, immutable';
 app.use('/assets', (req, res, next) => {
   const m = /^\/([^/]+)\.(png|jpe?g)$/i.exec(req.path);
   if (m) {
     const webp = m[1] + '.webp';
     if (optFiles.has(webp)) {
       res.type('image/webp');
+      res.set('Cache-Control', LONG_CACHE);
       return res.sendFile(path.join(OPT_DIR, webp));
     }
   } else if (req.path === '/video-hero.mp4' && optFiles.has('video-hero.mp4')) {
     res.type('video/mp4');
+    res.set('Cache-Control', LONG_CACHE);
     return res.sendFile(path.join(OPT_DIR, 'video-hero.mp4'));
   }
   next();
 });
+app.use('/assets', express.static(path.join(PUBLIC, 'assets'), { maxAge: '1y', immutable: true }));
 app.use(express.static(PUBLIC, { extensions: ['html'] }));
 
 // /produit/<handle> -> le meme template pour tous les produits
